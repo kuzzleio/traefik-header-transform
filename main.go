@@ -5,6 +5,8 @@ import (
 	"net/http"
 )
 
+type Config struct {}
+
 // KuzzleAuth a plugin to use Kuzzle as authentication provider for Basic Auth Traefik middleware.
 type HeaderTransform struct {
 	next   http.Handler
@@ -12,7 +14,7 @@ type HeaderTransform struct {
 }
 
 // New created a new KuzzleBasicAuth plugin.
-func New(ctx context.Context, next http.Handler, name string) (http.Handler, error) {
+func New(ctx context.Context, next http.Handler, config *Config, name string) (http.Handler, error) {
 	return &HeaderTransform{
 		next:   next,
 		name:   name,
