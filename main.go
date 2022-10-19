@@ -13,7 +13,12 @@ type HeaderTransform struct {
 	name   string
 }
 
-// New created a new KuzzleBasicAuth plugin.
+func CreateConfig() *Config {
+	return &Config {
+		// ...
+	}
+}
+
 func New(ctx context.Context, next http.Handler, config *Config, name string) (http.Handler, error) {
 	return &HeaderTransform{
 		next:   next,
