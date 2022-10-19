@@ -1,0 +1,9 @@
+displayName: Transform headers value
+type: middleware
+iconPath: assets/icon.png
+
+import: github.com/kuzzleio/traefik-header-transform
+
+summary: 'Transform header value'
+
+testData: {}
