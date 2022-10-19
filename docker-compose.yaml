@@ -1,0 +1,29 @@
+
+version: "3.3"
+
+services:
+#------------------------------------------------------------------------------
+# Traefik proxy configured with plugin dev mode and Dashboard
+# NOTE: Only 'admin' user can access Traefik Dashboard
+#------------------------------------------------------------------------------
+  traefik:
+    image: "traefik:v2.9.1"
+    container_name: "traefik"
+    command:
+      - "--api.dashboard=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+      - "--experimental.localPlugins.example.moduleName=github.com/kuzzleio/traefik-header-transform"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.dashboard.entrypoints=web"
+      - "traefik.http.routers.dashboard.rule=Host(`traefik.localhost`)"
+      - "traefik.http.routers.dashboard.service=api@internal"
+      - "traefik.http.routers.dashboard.middlewares=my-plugin"
+      - "traefik.http.middlewares.my-plugin.plugin.example.headers.Foo=Bar"
+    ports:
+      - "80:80"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - "./:/plugins-local/src/github.com/kuzzleio/traefik-header-transform"
