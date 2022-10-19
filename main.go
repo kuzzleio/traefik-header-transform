@@ -39,9 +39,12 @@ func (ht *HeaderTransform) ServeHTTP(rw http.ResponseWriter, req *http.Request) 
 		}
 	}
 
+	if rw.Header().Get("Access-Control-Allow-Credentials") == "" {
+		rw.Header().Set("Access-Control-Allow-Credentials", "true")
+	}
+
 	rw.Header().Set("Origin", req.Header.Get("Origin"))
 	rw.Header().Set("Access-Control-Allow-Origin", req.Header.Get("Origin"))
-	rw.Header().Set("Access-Control-Allow-Credentials", "true")
 	rw.Header().Set("Vary", "Origin")
 
 	log.Print(rw.Header());
