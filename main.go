@@ -5,22 +5,27 @@ import (
 	"net/http"
 )
 
-type Config struct {}
+type Config struct {
+	Headers map[string]string `json:"headers,omitempty"`
+}
 
 // KuzzleAuth a plugin to use Kuzzle as authentication provider for Basic Auth Traefik middleware.
 type HeaderTransform struct {
 	next   http.Handler
+	headers  map[string]string
 	name   string
 }
 
+// CreateConfig creates the default plugin configuration.
 func CreateConfig() *Config {
-	return &Config {
-		// ...
+	return &Config{
+		Headers: make(map[string]string),
 	}
 }
 
 func New(ctx context.Context, next http.Handler, config *Config, name string) (http.Handler, error) {
-	return &HeaderTransform{
+	return &HeaderTransform {
+		headers:  config.Headers,
 		next:   next,
 		name:   name,
 	}, nil

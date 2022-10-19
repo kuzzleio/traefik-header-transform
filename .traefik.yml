@@ -6,4 +6,7 @@ import: github.com/kuzzleio/traefik-header-transform
 
 summary: 'Transform header value'
 
-testData: {}
+testData:
+  Headers:
+    X-Demo: test
+    X-URL: 'test-url'
