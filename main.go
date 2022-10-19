@@ -31,13 +31,20 @@ func New(ctx context.Context, next http.Handler, config *Config, name string) (h
 }
 
 func (ht *HeaderTransform) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
-	log.Print("Before", req.Header)
-
 	if req.Header.Get("Origin") == "null" {
-		req.Header.Set("Origin", req.Header.Get("Referer"))
+		if req.Header.Get("Referrer") != "" {
+			req.Header.Set("Origin", req.Header.Get("Referrer"))
+		} else {
+			req.Header.Set("Origin", req.Header.Get("Referer"))
+		}
 	}
 
-	log.Print("After", req.Header)
+	rw.Header().Set("Origin", req.Header.Get("Origin"))
+	rw.Header().Set("Access-Control-Allow-Origin", req.Header.Get("Origin"))
+	rw.Header().Set("Access-Control-Allow-Credentials", "true")
+	rw.Header().Set("Vary", "Origin")
+
+	log.Print(rw.Header());
 
 	ht.next.ServeHTTP(rw, req)
 }
