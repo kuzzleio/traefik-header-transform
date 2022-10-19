@@ -31,7 +31,7 @@ func New(ctx context.Context, next http.Handler, config *Config, name string) (h
 
 func (ht *HeaderTransform) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
 	if req.Header.Get("Origin") == "null" {
-		req.Header.Set("Origin", req.Header.Get("Referrer"))
+		req.Header.Set("Origin", req.Header.Get("Referer"))
 	}
 
 	ht.next.ServeHTTP(rw, req)
