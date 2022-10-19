@@ -2,6 +2,7 @@ package traefik_header_transform
 
 import (
 	"context"
+	"log"
 	"net/http"
 )
 
@@ -30,9 +31,13 @@ func New(ctx context.Context, next http.Handler, config *Config, name string) (h
 }
 
 func (ht *HeaderTransform) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
+	log.Print("Before", req.Header)
+
 	if req.Header.Get("Origin") == "null" {
 		req.Header.Set("Origin", req.Header.Get("Referer"))
 	}
+
+	log.Print("After", req.Header)
 
 	ht.next.ServeHTTP(rw, req)
 }
