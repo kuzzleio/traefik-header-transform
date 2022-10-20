@@ -33,15 +33,14 @@ func New(ctx context.Context, next http.Handler, config *Config, name string) (h
 func (ht *HeaderTransform) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
 	if req.Header.Get("Origin") == "null" {
 		if req.Header.Get("Referrer") != "" {
-			req.Header.Add("Origin", req.Header.Get("Referrer"))
+			req.Header.Set("Origin", req.Header.Get("Referrer"))
 		} else {
-			req.Header.Add("Origin", req.Header.Get("Referer"))
+			req.Header.Set("Origin", req.Header.Get("Referer"))
 		}
 
 	}
 	
-	rw.Header().Add("Origin", req.Header.Get("Origin"))
-	rw.Header().Add("Access-Control-Allow-Origin", req.Header.Get("Origin"))
+	rw.Header().Add("Access-Control-Allow-Origin", "")
 	rw.Header().Add("Access-Control-Allow-Credentials", "true")
 	rw.Header().Add("Vary", "Origin")
 
