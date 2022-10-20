@@ -40,12 +40,13 @@ func (ht *HeaderTransform) ServeHTTP(rw http.ResponseWriter, req *http.Request) 
 
 	}
 	
-	rw.Header().Set("Origin", req.Header.Get("Origin"))
-	rw.Header().Set("Access-Control-Allow-Origin", req.Header.Get("Origin"))
-	rw.Header().Set("Access-Control-Allow-Credentials", "true")
-	rw.Header().Set("Vary", "Origin")
+	rw.Header().Add("Origin", req.Header.Get("Origin"))
+	rw.Header().Add("Access-Control-Allow-Origin", req.Header.Get("Origin"))
+	rw.Header().Add("Access-Control-Allow-Credentials", "true")
+	rw.Header().Add("Vary", "Origin")
 
-	log.Print(rw.Header());
+	log.Print("Response", rw.Header())
+	log.Print("Request", req.Header)
 
 	ht.next.ServeHTTP(rw, req)
 }
