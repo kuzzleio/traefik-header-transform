@@ -37,10 +37,10 @@ func (ht *HeaderTransform) ServeHTTP(rw http.ResponseWriter, req *http.Request) 
 		} else {
 			rw.Header().Add("Origin", req.Header.Get("Referer"))
 		}
-
+		req.Header.Del("Origin");
 	}
 	
-	rw.Header().Del("Access-Control-Allow-Origin")
+	rw.Header().Add("Access-Control-Allow-Origin", rw.Header().Get("Origin"))
 	rw.Header().Add("Access-Control-Allow-Credentials", "true")
 	rw.Header().Add("Vary", "Origin")
 
