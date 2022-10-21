@@ -30,7 +30,10 @@ func New(ctx context.Context, next http.Handler, config *Config, name string) (h
 }
 
 func (ht *HeaderTransform) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
-	rw.Header().Add("Access-Control-Allow-Origin", req.Header.Get("Origin"))
+	if req.Header.Get("Origin") != "" {
+		rw.Header().Add("Access-Control-Allow-Origin", req.Header.Get("Origin"))
+	}
+
 	rw.Header().Add("Access-Control-Allow-Credentials", "true")
 	rw.Header().Add("Vary", "Origin")
 
